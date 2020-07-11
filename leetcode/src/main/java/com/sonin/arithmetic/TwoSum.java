@@ -7,10 +7,10 @@ import java.util.Map;
 /**
  * @author sonin
  * @date 2020/7/10 21:24
- * <p>
+ *
  * 给定一个整数数组nums和一个目标值target，请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标。
  */
-public class SumOfTwoNumbers {
+public class TwoSum {
 
     /**
      * 时间复杂度O(n²)
@@ -36,6 +36,7 @@ public class SumOfTwoNumbers {
     /**
      * 时间复杂度 O(n)
      * 空间复杂度 O(n)
+     *
      * @param nums
      * @param target
      * @return
