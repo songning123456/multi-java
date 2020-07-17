@@ -9,6 +9,8 @@ import java.util.TreeMap;
  */
 public class TreeMapMain {
     public static void main(String[] args) {
+        SynchronizedDemo synchronizedDemo = new SynchronizedDemo();
+        synchronizedDemo.method();
         Map<String, Integer> treeMap = new TreeMap<>();
         treeMap.put("3", 3);
         treeMap.put("2", 2);
