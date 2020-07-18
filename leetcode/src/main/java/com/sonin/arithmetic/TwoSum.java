@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @author sonin
  * @date 2020/7/10 21:24
- *
+ * <p>
  * 给定一个整数数组nums和一个目标值target，请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标。
  */
 public class TwoSum {
@@ -50,6 +50,17 @@ public class TwoSum {
             int complete = target - nums[i];
             if (map.containsKey(complete) && map.get(complete) != i) {
                 return new int[]{i, map.get(complete)};
+            }
+        }
+        return new int[2];
+    }
+
+    public int[] twoSum3(int[] numbers, int target) {
+        for (int i = 0; i < numbers.length - 1; i++) {
+            for (int j = i + 1; j < numbers.length; j++) {
+                if (numbers[i] + numbers[j] == target) {
+                    return new int[]{i, j};
+                }
             }
         }
         return new int[2];
