@@ -1,6 +1,11 @@
 package com.sonin.arithmetic;
 
+import com.sonin.arithmetic.components.ListNode;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 /**
  * @author sonin
@@ -55,6 +60,28 @@ public class IsPalindrome {
             }
             left++;
             right--;
+        }
+        return true;
+    }
+
+
+    public boolean isPalindrome(ListNode head) {
+        ListNode cur = head;
+        List<Integer> list = new ArrayList<>();
+        while (cur != null) {
+            list.add(cur.val);
+            cur = cur.next;
+        }
+        if (list.isEmpty()) {
+            return true;
+        }
+        int front = 0, tail = list.size() - 1;
+        while (front < tail) {
+            if (!list.get(front).equals(list.get(tail))) {
+                return false;
+            }
+            front++;
+            tail--;
         }
         return true;
     }
