@@ -1,7 +1,6 @@
 package com.sonin.arithmetic;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author sonin
@@ -26,7 +25,30 @@ public class Intersection {
         return res;
     }
 
-//    public int[] intersect(int[] nums1, int[] nums2) {
-//
-//    }
+    public int[] intersect(int[] nums1, int[] nums2) {
+        if (nums1.length > nums2.length) {
+            return intersect(nums2, nums1);
+        }
+        int count = 0;
+        int[] res = new int[nums1.length];
+        int index = 0;
+        Map<Integer, Integer> map = new HashMap<>(2);
+        for (int num : nums1) {
+            count = map.getOrDefault(num, 0) + 1;
+            map.put(num, count);
+        }
+        for (int num : nums2) {
+            count = map.getOrDefault(num, 0);
+            if (count > 0) {
+                res[index++] = num;
+                count--;
+                if (count > 0) {
+                    map.put(num, count);
+                } else {
+                    map.remove(num);
+                }
+            }
+        }
+        return Arrays.copyOfRange(res, 0, index);
+    }
 }
