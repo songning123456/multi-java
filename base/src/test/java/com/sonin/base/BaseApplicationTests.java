@@ -17,8 +17,9 @@ class BaseApplicationTests {
         String userName = "sonin";
         String password = "772805406sn123.";
         String host = "192.168.88.128";
-        String port = "6400";
-        new SshClient().execAlone(userName, password, host, port);
+        int port = 6400;
+//        new SshClient().execAlone(userName, password, host, port);
+        new SshClient().execSentinel(userName, password, host, 6500, 2);
     }
 
 }
