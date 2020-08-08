@@ -6,6 +6,7 @@
 
     <modules>
         <module>leetcode</module>
+        <module>base</module>
     </modules>
 
     <parent>
