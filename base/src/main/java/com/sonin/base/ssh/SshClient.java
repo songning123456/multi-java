@@ -155,7 +155,7 @@ public class SshClient {
                 connection.close();
             }
         }
-        for (int i = 0; i < totalNum; i++) {
+        /*for (int i = 0; i < totalNum; i++) {
             int curPort = startPort + i;
             if (i != 0) {
                 Jedis jedis = new Jedis(host, startPort);
@@ -218,7 +218,7 @@ public class SshClient {
             });
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private List<RedisNode> clusterNodes(String host, int port) throws Exception {
