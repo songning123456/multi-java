@@ -19,7 +19,8 @@ class BaseApplicationTests {
         String host = "192.168.88.128";
         int port = 6400;
 //        new SshClient().execAlone(userName, password, host, port);
-        new SshClient().execSentinel(userName, password, host, 6500, 2);
+//        new SshClient().execSentinel(userName, password, host, 6500, 2);
+        new SshClient().execCluster(userName, password, host, 6610, 3, 1);
     }
 
 }
