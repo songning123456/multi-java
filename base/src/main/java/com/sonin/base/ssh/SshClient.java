@@ -155,6 +155,8 @@ public class SshClient {
                 connection.close();
             }
         }
+        // redis-cli --cluster create 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005  127.0.0.1:7006 --cluster-replicas 1
+
         /*for (int i = 0; i < totalNum; i++) {
             int curPort = startPort + i;
             if (i != 0) {
