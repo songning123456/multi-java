@@ -1,8 +1,6 @@
 package com.sonin.simple;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author sonin
@@ -164,6 +162,167 @@ public class SimpleLc {
             }
         }
         return min;
+    }
+
+    /**
+     * 下一个更大元素
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums1.length; i++) {
+            for (int j = 0; j < nums2.length; j++) {
+                if (nums1[i] == nums2[j]) {
+                    if (j + 1 < nums2.length) {
+                        int k = j + 1;
+                        for (; k < nums2.length; k++) {
+                            if (nums2[k] > nums1[i]) {
+                                break;
+                            }
+                        }
+                        if (k < nums2.length) {
+                            res.add(nums2[k]);
+                        } else {
+                            res.add(-1);
+                        }
+                    } else {
+                        res.add(-1);
+                    }
+                }
+            }
+        }
+        int[] array = new int[res.size()];
+        for (int i = 0; i < res.size(); i++) {
+            array[i] = res.get(i);
+        }
+        return array;
+    }
+
+    /**
+     * 键盘行
+     *
+     * @param words
+     * @return
+     */
+    public String[] findWords(String[] words) {
+        return new String[2];
+    }
+
+    /**
+     * 相对名次
+     *
+     * @param nums
+     * @return
+     */
+    public String[] findRelativeRanks(int[] nums) {
+        Arrays.sort(nums);
+        String[] res = new String[nums.length];
+        int j = 0;
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (j == 0) {
+                res[j++] = "Gold Medal";
+            } else if (j == 1) {
+                res[j++] = "Silver Medal";
+            } else if (j == 2) {
+                res[j++] = "Bronze Medal";
+            } else {
+                res[j++] = String.valueOf(j);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 完美树
+     *
+     * @param num
+     * @return
+     */
+    public boolean checkPerfectNumber(int num) {
+        if (num <= 0) {
+            return false;
+        }
+        int sum = 0;
+        for (int i = 1; i * i <= num; i++) {
+            if (num % i == 0) {
+                sum += i;
+                if (i * i != sum) {
+                    sum += num / i;
+                }
+            }
+        }
+        return sum == 2 * num;
+    }
+
+    /**
+     * 斐波那契数列
+     *
+     * @param N
+     * @return
+     */
+    public int fib(int N) {
+        if (N == 0) {
+            return 0;
+        }
+        if (N == 1) {
+            return 1;
+        }
+        return fib(N - 1) + fib(N - 2);
+    }
+
+    public boolean detectCapitalUse(String word) {
+        boolean res = false;
+        int flag = 0;
+        int temp = word.charAt(0);
+        if (temp >= 97 && temp <= 122) {
+            flag = 1;
+        } else if (temp >= 65 && temp <= 90) {
+            flag = 2;
+        }
+        if (flag == 1) {
+            int i = 1;
+            while (i < word.length()) {
+                temp = word.charAt(i);
+                if (temp >= 65 && temp <= 90) {
+                    break;
+                }
+                i++;
+            }
+            if (i == word.length()) {
+                res = true;
+            }
+        } else if (flag == 2) {
+            int i = 1;
+            int count = 0;
+            while (i < word.length()) {
+                temp = word.charAt(i);
+                if (temp >= 65 && temp <= 90) {
+                    count++;
+                }
+                if (temp >= 97 && temp <= 122) {
+                    count--;
+                }
+                i++;
+            }
+            if (Math.abs(count) == word.length() - 1) {
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 最长特殊序列
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public int findLUSlength(String a, String b) {
+        return 1;
     }
 
     public static void main(String[] args) {
