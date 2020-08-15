@@ -325,6 +325,30 @@ public class SimpleLc {
         return 1;
     }
 
+    /**
+     * 反转字符串
+     *
+     * @param s
+     * @param k
+     * @return
+     */
+    public String reverseStr(String s, int k) {
+        char[] chars = s.toCharArray();
+        int len = s.length();
+        for (int i = 0; i < len; i += 2 * k) {
+            int left = i;
+            int right = (i + k - 1 < len) ? (i + k - 1) : len - 1;
+            while (left <= right) {
+                char temp = chars[left];
+                chars[left] = chars[right];
+                chars[right] = temp;
+                left++;
+                right--;
+            }
+        }
+        return new String(chars);
+    }
+
     public static void main(String[] args) {
 //        findComplement(2);
 //        licenseKeyFormatting("2-5g-3-J", 2);
