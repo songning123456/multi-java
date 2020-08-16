@@ -1,4 +1,4 @@
-package com.sonin.arithmetic.components;
+package com.sonin.entity;
 
 /**
  * @author sonin

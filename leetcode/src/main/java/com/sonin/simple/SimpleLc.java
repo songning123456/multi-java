@@ -349,9 +349,64 @@ public class SimpleLc {
         return new String(chars);
     }
 
+    public String reverseWords(String s) {
+        String[] strs = s.split(" ");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < strs.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = strs[i].length() - 1; j >= 0; j--) {
+                sb.append(strs[i].charAt(j));
+            }
+            if (i != strs.length - 1) {
+                sb.append(" ");
+            }
+            stringBuilder.append(sb);
+        }
+        return stringBuilder.toString();
+    }
+
+    public int arrayPairSum(int[] nums) {
+        Arrays.sort(nums);
+        int sum = 0;
+        for (int i = 0; i < nums.length; i += 2) {
+            sum += nums[i];
+        }
+        return sum;
+    }
+
+    public int distributeCandies(int[] candies) {
+        Set<Integer> set = new HashSet<>();
+        for (int candy : candies) {
+            set.add(candy);
+        }
+        return Math.min(set.size(), candies.length / 2);
+    }
+
+    private boolean isOrder(int[] nums) {
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] > nums[i + 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int findUnsortedSubarray(int[] nums) {
+        int[] sort = nums.clone();
+        Arrays.sort(sort);
+        int start = nums.length - 1, end = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (sort[i] != nums[i]) {
+                start = Math.min(start, i);
+                end = Math.max(end, i);
+            }
+        }
+        return (end - start > 0) ? (end - start + 1) : 0;
+    }
+
     public static void main(String[] args) {
-//        findComplement(2);
-//        licenseKeyFormatting("2-5g-3-J", 2);
-        constructRectangle(2);
+        SimpleLc simpleLc = new SimpleLc();
+        int[] nums = new int[]{1, 2, 3, 5, 4};
+        simpleLc.findUnsortedSubarray(nums);
     }
 }

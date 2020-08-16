@@ -1,6 +1,6 @@
 package com.sonin.arithmetic;
 
-import com.sonin.arithmetic.components.TreeNode;
+import com.sonin.entity.TreeNode;
 
 /**
  * @author sonin
