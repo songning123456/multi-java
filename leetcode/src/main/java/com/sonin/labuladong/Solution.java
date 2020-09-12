@@ -246,6 +246,128 @@ public class Solution {
         return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
     }
 
+    public int maxProfitOfOne(int[] prices) {
+        int len = prices.length;
+        int[][] dp = new int[len][2];
+        for (int i = 0; i < len; i++) {
+            if (i == 0) {
+                dp[i][0] = 0;
+                dp[i][1] = -prices[i];
+            } else {
+                dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+                dp[i][1] = Math.max(dp[i - 1][1], -prices[i]);
+            }
+        }
+        return dp[len - 1][0];
+    }
+
+    public int maxProfitWithCool(int[] prices) {
+        int len = prices.length;
+        int[][] dp = new int[len][2];
+        for (int i = 0; i < len; i++) {
+            if (i == 0) {
+                dp[i][0] = 0;
+                dp[i][1] = -prices[i];
+            } else if (i == 1) {
+                dp[i][0] = Math.max(0, prices[1] - prices[0]);
+                dp[i][1] = Math.max(-prices[0], -prices[1]);
+            } else {
+                dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+                dp[i][1] = Math.max(dp[i - 1][1], dp[i - 2][0] - prices[i]);
+            }
+        }
+        return dp[len - 1][0];
+    }
+
+    public int maxProfitWithFree(int[] prices, int free) {
+        int len = prices.length;
+        int[][] dp = new int[len][2];
+        for (int i = 0; i < len; i++) {
+            if (i == 0) {
+                dp[i][0] = 0;
+                dp[i][1] = -prices[i];
+            } else {
+                dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+                dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i] - free);
+            }
+        }
+        return dp[len - 1][0];
+    }
+
+    public int maxProfitWithFree(int[] prices) {
+        int max_k = 2;
+        int n = prices.length;
+        int[][][] dp = new int[n][max_k + 1][2];
+        for (int i = 0; i < n; i++) {
+            for (int k = max_k; k >= 1; k--) {
+                if (i == 0) {
+                    dp[0][k][0] = 0;
+                    dp[0][k][1] = -prices[i];
+                } else {
+                    dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+                    dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+                }
+            }
+        }
+        return dp[n - 1][max_k][0];
+    }
+
+    int[] twoSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+            if (sum == target) {
+                return new int[]{left, right};
+            } else if (sum < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return new int[]{-1, -1};
+    }
+
+    public int[] twoSum2(int[] nums, int target) {
+        int n = nums.length;
+        Map<Integer, Integer> map = new HashMap<>(2);
+        for (int i = 0; i < n; i++) {
+            map.put(nums[i], i);
+        }
+        for (int i = 0; i < n; i++) {
+            int other = target - nums[i];
+            if (map.containsKey(other) && map.get(other) != i) {
+                return new int[]{i, map.get(other)};
+            }
+        }
+        return new int[]{-1, -1};
+    }
+
+    private Map<String, Integer> dpEgg = new HashMap<>(2);
+
+    private int dpOfEgg(int K, int N) {
+        if (K == 1) {
+            return N;
+        }
+        if (N == 0) {
+            return 0;
+        }
+        String key = K + "-" + N;
+        if (dpEgg.containsKey(key)) {
+            return dpEgg.get(key);
+        }
+        int res = Integer.MAX_VALUE;
+        for (int i = 1; i <= N; i++) {
+            res = Math.min(res, Math.max(dpOfEgg(K, N - i), dpOfEgg(K - 1, i - 1)) + 1);
+        }
+        dpEgg.put(K + "-" + N, res);
+        return res;
+    }
+
+    public int superEggDrop(int K, int N) {
+        return dpOfEgg(K, N);
+    }
+
     public static void main(String[] args) {
         Solution solution = new Solution();
 
