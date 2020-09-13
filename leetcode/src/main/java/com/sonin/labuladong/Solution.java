@@ -368,6 +368,170 @@ public class Solution {
         return dpOfEgg(K, N);
     }
 
+    public int fib(int N) {
+        if (N == 0) {
+            return 0;
+        }
+        if (N == 1) {
+            return 1;
+        }
+        int prev = 0, cur = 1;
+        for (int i = 2; i <= N; i++) {
+            int sum = prev + cur;
+            prev = cur;
+            cur = sum;
+        }
+        return cur;
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        int res = 0;
+        for (int value : dp) {
+            res = Math.max(res, value);
+        }
+        return res;
+    }
+
+    public int coinChange2(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+        for (int i = 0; i < dp.length; i++) {
+            for (int coin : coins) {
+                if (i - coin >= 0) {
+                    dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
+                }
+            }
+        }
+        if (dp[amount] == amount + 1) {
+            return -1;
+        } else {
+            return dp[amount];
+        }
+    }
+
+    private Map<Integer, Integer> coinMap = new HashMap<>();
+
+    public int coinChange(int[] coins, int amount) {
+        return dp(coins, amount);
+    }
+
+    private int dp(int[] arr, int n) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n < 0) {
+            return -1;
+        }
+        if (coinMap.containsKey(n)) {
+            return coinMap.get(n);
+        }
+        int res = Integer.MAX_VALUE;
+        for (int item : arr) {
+            int subProblem = dp(arr, n - item);
+            if (subProblem != -1) {
+                res = Math.min(res, 1 + subProblem);
+            }
+        }
+        if (res == Integer.MAX_VALUE) {
+            coinMap.put(n, -1);
+            return -1;
+        } else {
+            coinMap.put(n, res);
+            return res;
+        }
+    }
+
+    public int maxSubArray(int[] nums) {
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+        int[] dp = new int[n];
+        dp[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            dp[i] = Math.max(nums[i], nums[i] + dp[i - 1]);
+        }
+        int res = Integer.MIN_VALUE;
+        for (int i = 0; i < n; i++) {
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+
+    public int maxSubArray2(int[] nums) {
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+        int dp_0 = nums[0];
+        int dp_1, res = dp_0;
+        for (int i = 1; i < n; i++) {
+            dp_1 = Math.max(nums[i], nums[i] + dp_0);
+            dp_0 = dp_1;
+            res = Math.max(res, dp_1);
+        }
+        return res;
+    }
+
+    private Map<String, Integer> mdMap = new HashMap<>(2);
+
+    private int mdDpFunc(String word1, String word2, int i, int j) {
+        if (i == -1) {
+            return j + 1;
+        }
+        if (j == -1) {
+            return i + 1;
+        }
+        if (mdMap.containsKey(i + "-" + j)) {
+            return mdMap.get(i + "-" + j);
+        }
+        if (word1.charAt(i) == word2.charAt(j)) {
+            int res = mdDpFunc(word1, word2, i - 1, j - 1);
+            mdMap.put(i + "-" + j, res);
+            return res;
+        } else {
+            int res = Math.min(mdDpFunc(word1, word2, i, j - 1) + 1, Math.min(mdDpFunc(word1, word2, i - 1, j) + 1, mdDpFunc(word1, word2, i - 1, j - 1) + 1));
+            mdMap.put(i + "-" + j, res);
+            return res;
+        }
+    }
+
+    public int minDistance(String word1, String word2) {
+        return mdDpFunc(word1, word2, word1.length() - 1, word2.length() - 1);
+    }
+
+    public int minDistance2(String word1, String word2) {
+        int m = word1.length(), n = word2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 1; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 1; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.min(dp[i - 1][j] + 1, Math.min(dp[i][j - 1] + 1, dp[i - 1][j - 1] + 1));
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+
     public static void main(String[] args) {
         Solution solution = new Solution();
 
@@ -382,6 +546,58 @@ public class Solution {
 //        System.out.println(solution.findAnagrams("cbaebabacd", "abc"));
 
         System.out.println(solution.checkInclusion("ab", "eidbaooo"));
+    }
+
+    private int binaryValley(int floors, int eggs, int[][] dp) {
+        int left = 1;
+        int right = floors;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            int broken = dp[mid - 1][eggs - 1];
+            int notBroken = dp[floors - mid][eggs];
+            if (notBroken > broken) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return Math.max(dp[right - 1][eggs - 1], dp[floors - right][eggs]) + 1;
+    }
+
+    public int superEggDrop2(int K, int N) {
+        int[][] dp = new int[N + 1][K + 1];
+        for (int i = 0; i < N + 1; i++) {
+            for (int j = 0; j < K + 1; j++) {
+                dp[i][j] = 0;
+            }
+        }
+        for (int j = 1; j <= K; j++) {
+            dp[1][j] = 1;
+        }
+        for (int i = 1; i <= N; i++) {
+            dp[i][1] = i;
+        }
+        for (int i = 2; i <= N; i++) {
+            for (int j = 2; j <= K; j++) {
+                dp[i][j] = binaryValley(i, j, dp);
+            }
+        }
+        return dp[N][K];
+    }
+
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length(), n = text2.length();
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[m][n];
     }
 
 }
