@@ -1,8 +1,11 @@
 package com.sonin.base;
 
+import com.sonin.base.proxy.*;
 import com.sonin.base.ssh.SshClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.lang.reflect.Proxy;
 
 @SpringBootTest
 class BaseApplicationTests {
@@ -21,6 +24,18 @@ class BaseApplicationTests {
 //        new SshClient().execAlone(userName, password, host, port);
 //        new SshClient().execSentinel(userName, password, host, 6500, 2);
         new SshClient().execCluster(userName, password, host, 6610, 3, 1);
+    }
+
+    @Test
+    public void testProxy() {
+        BuyHouse buyHouse = new BuyHouseImpl();
+//        BuyHouseProxy buyHouseProxy = new BuyHouseProxy(buyHouse);
+//        buyHouseProxy.buyHouse();
+//        BuyHouse proxyBuyHouse = (BuyHouse) Proxy.newProxyInstance(BuyHouse.class.getClassLoader(), new Class[]{BuyHouse.class}, new DynamicProxyHandler(buyHouse));
+//        proxyBuyHouse.buyHouse();
+        CglibProxy cglibProxy = new CglibProxy();
+        BuyHouseImpl buyHouse1 = (BuyHouseImpl) cglibProxy.getInstance(buyHouse);
+        buyHouse1.buyHouse();
     }
 
 }
