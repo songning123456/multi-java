@@ -175,8 +175,9 @@ public class Solution2 {
         Solution2 solution2 = new Solution2();
 //        boolean res = solution2.isSubsequence("abc", "ahbgdc");
 //        System.out.println(res);
-        int[][] intervals = {{1, 2}};
-        solution2.eraseOverlapIntervals(intervals);
+//        int[][] intervals = {{1, 2}};
+//        solution2.eraseOverlapIntervals(intervals);
+        solution2.isValid("{}");
         System.out.println();
     }
 
@@ -371,5 +372,68 @@ public class Solution2 {
             right = right.next;
         }
         return true;
+    }
+
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            int newIndex = Math.abs(nums[i]) - 1;
+            if (nums[newIndex] > 0) {
+                nums[newIndex] *= -1;
+            }
+        }
+        List<Integer> result = new LinkedList<>();
+        for (int i = 1; i <= nums.length; i++) {
+            if (nums[i - 1] > 0) {
+                result.add(i);
+            }
+        }
+        return result;
+    }
+
+    public int[] findErrorNums(int[] nums) {
+        int n = nums.length;
+        int dup = -1;
+        for (int i = 0; i < n; i++) {
+            int index = Math.abs(nums[i]) - 1;
+            if (nums[index] < 0) {
+                dup = Math.abs(nums[i]);
+            } else {
+                nums[index] *= -1;
+            }
+        }
+        int missing = -1;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] > 0) {
+                missing = i + 1;
+            }
+        }
+        return new int[]{dup, missing};
+    }
+
+    public boolean isValid(String s) {
+        Stack<Character> left = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char character = s.charAt(i);
+            if (character == '(' || character == '{' || character == '[') {
+                left.push(character);
+            } else {
+                if (!left.empty() && leftOf(character) == left.peek()) {
+                    left.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+        return left.empty();
+    }
+
+    private char leftOf(Character c) {
+        if (c == '}') {
+            return '{';
+        } else if (c == '}') {
+            return '}';
+        } else {
+            return ']';
+        }
     }
 }
