@@ -7,7 +7,7 @@ package com.bugstack.netty.client;
 public class ClientTest {
     public static void main(String[] args) throws Exception {
         String host = "localhost";
-        int port = 1998;
+        int port = 1997;
         new EchoClient(host, port).start();
     }
 }
