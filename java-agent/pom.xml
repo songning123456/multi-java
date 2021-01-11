@@ -18,6 +18,16 @@
             <version>3.22.0-GA</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.8.20</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>1.8.20</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -33,14 +43,26 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
+                <!--基于javassist打入 -->
+                <!--<configuration>
                     <artifactSet>
                         <includes>
                             <include>javassist:javassist:jar:</include>
                         </includes>
                     </artifactSet>
+                </configuration>-->
+                <!--基于bytebuddy打入 -->
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>javassist:javassist:jar:</include>
+                            <include>net.bytebuddy:byte-buddy:jar:</include>
+                            <include>net.bytebuddy:byte-buddy-agent:jar:</include>
+                        </includes>
+                    </artifactSet>
                 </configuration>
             </plugin>
+            <!--设置java8编译环境 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -50,13 +72,13 @@
                     <source>8</source>
                 </configuration>
             </plugin>
+            <!--自动添加META-INF/MANIFEST.MF -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
                     <archive>
-                        <!--自动添加META-INF/MANIFEST.MF -->
                         <manifest>
                             <addClasspath>true</addClasspath>
                         </manifest>
