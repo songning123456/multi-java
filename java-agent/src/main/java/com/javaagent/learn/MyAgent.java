@@ -8,6 +8,8 @@ import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
 
 import java.lang.instrument.Instrumentation;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author sonin
@@ -23,8 +25,17 @@ public class MyAgent {
      */
     public static void premain(String agentArgs, Instrumentation inst) {
         System.out.println("agent params：" + agentArgs);
-        /*JavassistClassFileTransformer javassistClassFileTransformer = new JavassistClassFileTransformer();
-        inst.addTransformer(javassistClassFileTransformer);*/
+        // javassist(inst);
+        // byteBuddy(inst);
+        jvm();
+    }
+
+    private static void javassist(Instrumentation inst) {
+        JavassistClassFileTransformer javassistClassFileTransformer = new JavassistClassFileTransformer();
+        inst.addTransformer(javassistClassFileTransformer);
+    }
+
+    private static void byteBuddy(Instrumentation inst) {
         AgentBuilder.Transformer transformer = (builder, typeDescription, classLoader, javaModule) -> {
             return builder.method(ElementMatchers.any()) // 拦截任意方法
                     .intercept(MethodDelegation.to(ByteBuddyCost.class)); // 委托
@@ -53,6 +64,14 @@ public class MyAgent {
         };
         new AgentBuilder.Default().type(ElementMatchers.nameStartsWith("com.javaagent.learn")) // 指定需要拦截的类
                 .transform(transformer).with(listener).installOn(inst);
+    }
+
+    private static void jvm() {
+        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> {
+            JvmStack.printMemoryInfo();
+            JvmStack.printGCInfo();
+            System.out.println("===================================================================================================");
+        }, 0, 5000, TimeUnit.MILLISECONDS);
     }
 
     /**
