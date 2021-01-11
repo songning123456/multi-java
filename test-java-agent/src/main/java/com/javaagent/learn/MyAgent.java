@@ -1,6 +1,7 @@
 package com.javaagent.learn;
 
 import net.bytebuddy.agent.builder.AgentBuilder;
+import net.bytebuddy.asm.Advice;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.implementation.MethodDelegation;
@@ -27,7 +28,8 @@ public class MyAgent {
         System.out.println("agent params：" + agentArgs);
         // javassist(inst);
         // byteBuddy(inst);
-        jvm();
+        // jvm();
+        threadLocal(inst);
     }
 
     private static void javassist(Instrumentation inst) {
@@ -72,6 +74,39 @@ public class MyAgent {
             JvmStack.printGCInfo();
             System.out.println("===================================================================================================");
         }, 0, 5000, TimeUnit.MILLISECONDS);
+    }
+
+    private static void threadLocal(Instrumentation inst) {
+        AgentBuilder agentBuilder = new AgentBuilder.Default();
+        AgentBuilder.Transformer transformer = (builder, typeDescription, classLoader, javaModule) -> {
+            builder = builder.visit(Advice.to(MyAdvice.class).on(ElementMatchers.isMethod().and(ElementMatchers.any()).and(ElementMatchers.not(ElementMatchers.nameStartsWith("main")))));
+            return builder;
+        };
+        agentBuilder = agentBuilder.type(ElementMatchers.nameStartsWith("com.javaagent.learn")).transform(transformer).asDecorator();
+        //监听
+        AgentBuilder.Listener listener = new AgentBuilder.Listener() {
+            @Override
+            public void onDiscovery(String s, ClassLoader classLoader, JavaModule javaModule, boolean b) {
+            }
+
+            @Override
+            public void onTransformation(TypeDescription typeDescription, ClassLoader classLoader, JavaModule javaModule, boolean b, DynamicType dynamicType) {
+                System.out.println("onTransformation：" + typeDescription);
+            }
+
+            @Override
+            public void onIgnored(TypeDescription typeDescription, ClassLoader classLoader, JavaModule javaModule, boolean b) {
+            }
+
+            @Override
+            public void onError(String s, ClassLoader classLoader, JavaModule javaModule, boolean b, Throwable throwable) {
+            }
+
+            @Override
+            public void onComplete(String s, ClassLoader classLoader, JavaModule javaModule, boolean b) {
+            }
+        };
+        agentBuilder.with(listener).installOn(inst);
     }
 
     /**

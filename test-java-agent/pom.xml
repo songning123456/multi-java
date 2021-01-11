@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>java-agent</artifactId>
+    <artifactId>test-java-agent</artifactId>
     <groupId>com.sonin</groupId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>javaagent</name>
+    <name>test-javaagent</name>
     <description>test-javaagent</description>
 
     <dependencies>
