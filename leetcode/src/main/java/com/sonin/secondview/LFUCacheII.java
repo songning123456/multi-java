@@ -1,4 +1,4 @@
-package com.sonin.thirdview;
+package com.sonin.secondview;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -8,7 +8,7 @@ import java.util.Map;
  * @author sonin
  * @date 2021/1/13 9:23
  */
-public class LFUCache {
+public class LFUCacheII {
 
     private Map<Integer, Integer> key2Val;
 
@@ -20,7 +20,7 @@ public class LFUCache {
 
     private int capacity;
 
-    public LFUCache(int capacity) {
+    public LFUCacheII(int capacity) {
         key2Val = new HashMap<>(2);
         key2Freq = new HashMap<>(2);
         freq2Keys = new HashMap<>(2);

@@ -1,4 +1,4 @@
-package com.sonin.thirdview;
+package com.sonin.secondview;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
